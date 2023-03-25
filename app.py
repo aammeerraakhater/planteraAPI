@@ -4,15 +4,23 @@ from keras.applications.mobilenet import MobileNet
 from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
+import cv2
 
 app = Flask(__name__)
 
+# def preprossing(image):
+#     image=Image.open(image)
+#     image = image.resize((224, 224))
+#     image_arr = np.array(image.convert('RGB'))
+#     image_arr.shape = (1, 224, 224, 3)
+#     return image_arr
+
 def preprossing(image):
-    image=Image.open(image)
-    image = image.resize((224, 224))
-    image_arr = np.array(image.convert('RGB'))
-    image_arr.shape = (1, 224, 224, 3)
-    return image_arr
+    image = cv2.imread(image)
+    image_resized = cv2.resize(image,(224, 224))
+    image_scaled = image_resized/255
+    image_reshaped = np.reshape(image_scaled,[1,224,224,3])
+    return image_reshaped
 
 classes =['Apple___Apple_scab',
         'Apple___Black_rot',
