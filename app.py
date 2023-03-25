@@ -8,13 +8,15 @@ import cv2
 
 app = Flask(__name__)
 
-def preprossing(image):
-    image = cv2.imread(image)
+def preprossing(recievedImage):
+    image = cv2.imread(recievedImage)
+    print("image preprocsessing read the image")
     image_resized = cv2.resize(image,(224, 224))
     image_scaled = image_resized/255
     image_reshaped = np.reshape(image_scaled,[1,224,224,3])
-    return image_reshaped
+    print("image preprocsessing returning the image")
 
+    return image_reshaped
 classes = ['Apple___Apple_scab',
         'Apple___Black_rot',
         'Apple___Cedar_apple_rust',
