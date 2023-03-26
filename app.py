@@ -17,10 +17,7 @@ def preprossing(recievedImage):
     # imagetype = imghdr.what(imageFakePath)
     # imagePath = 'static/IMG/usedimg.'+imagetype # this is definitely useless
     rImage.save(imagePath) # it's convert to the format i give
-    print('done')
-    print('image name')
     image = cv2.imread(imagePath)
-    print("image preprocsessing read the image")
     image_resized = cv2.resize(image,(224, 224))
     image_scaled = image_resized/255
     image_reshaped = np.reshape(image_scaled,[1,224,224,3])
@@ -102,7 +99,6 @@ def predict():
         image = request.files['fileup']
         print("image loaded....")
         image_arr= preprossing(image)
-        print(image_arr)
         print("predicting ...")
 
         result = model.predict(image_arr)

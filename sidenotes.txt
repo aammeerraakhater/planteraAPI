@@ -1,0 +1,1 @@
+Image.save() Saves this image under the given filename. If no format is specified, the format to use is determined from the filename extension, if possible.
