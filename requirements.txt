@@ -4,11 +4,5 @@ keras
 tensorflow==2.11.0
 pillow
 numpy==1.22.4
-<<<<<<< HEAD
 opencv-python-headless
 protobuf
-=======
-opencv-python
-opencv-python-headless
-protobuf
->>>>>>> 2ed5a71cefee76b1b13e66406590b70ecc583e83
