@@ -5,11 +5,21 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import cv2
+import imghdr
 
 app = Flask(__name__)
 
 def preprossing(recievedImage):
-    image = cv2.imread(recievedImage)
+    print('opening image')
+    rImage = Image.open(recievedImage)
+    imagePath = 'static/IMG/usedimg.jpeg'
+    # rImage.save(imageFakePath)
+    # imagetype = imghdr.what(imageFakePath)
+    # imagePath = 'static/IMG/usedimg.'+imagetype # this is definitely useless
+    rImage.save(imagePath) # it's convert to the format i give
+    print('done')
+    print('image name')
+    image = cv2.imread(imagePath)
     print("image preprocsessing read the image")
     image_resized = cv2.resize(image,(224, 224))
     image_scaled = image_resized/255
@@ -17,6 +27,8 @@ def preprossing(recievedImage):
     print("image preprocsessing returning the image")
 
     return image_reshaped
+
+
 classes = ['Apple___Apple_scab',
         'Apple___Black_rot',
         'Apple___Cedar_apple_rust',
@@ -90,7 +102,9 @@ def predict():
         image = request.files['fileup']
         print("image loaded....")
         image_arr= preprossing(image)
+        print(image_arr)
         print("predicting ...")
+
         result = model.predict(image_arr)
         print("predicted ...")
         ind = np.argmax(result)
@@ -98,7 +112,7 @@ def predict():
 
         print(prediction)
 
-        return render_template('index.html', prediction=prediction, image='static/IMG/', appName="plant disease detection")
+        return render_template('index.html', prediction='prediction', image='static/IMG/', appName="plant disease detection")
     else:
         return render_template('index.html',appName="plant disease detection")
 
