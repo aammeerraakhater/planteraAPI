@@ -1,12 +1,7 @@
-# FROM python:3.7
+FROM python:3.7
 
-# WORKDIR /app
 
-# # Install python dependencies
-# ADD requirements.txt /app/
-# RUN pip3 install --upgrade pip
-# RUN apt update; apt install -y libgl1
-# RUN pip3 install -r requirements.txt
+RUN apt-get update
+RUN apt install -y libgl1-mesa-glx
 
-# # Copy sources
-# ADD . /app
+COPY requirements.txt requirements.txt
