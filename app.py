@@ -5,18 +5,22 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import cv2
-import imghdr
-
+import os
 app = Flask(__name__)
+def remove_img(self, path, img_name):
+        if os.path.exists(path + '/' + img_name):
+            os.remove(path + '/' + img_name)
+        return True
 
 def preprossing(recievedImage):
+    remove_img(remove_img, 'static/IMG', 'usedimg.jpeg')
     print('opening image')
     rImage = Image.open(recievedImage)
     imagePath = 'static/IMG/usedimg.jpeg'
     # rImage.save(imageFakePath)
     # imagetype = imghdr.what(imageFakePath)
     # imagePath = 'static/IMG/usedimg.'+imagetype # this is definitely useless
-    rImage.save(imagePath) # it's convert to the format i give
+    rImage.save(imagePath) # this converts to the format i give
     image = cv2.imread(imagePath)
     image_resized = cv2.resize(image,(224, 224))
     image_scaled = image_resized/255
@@ -24,7 +28,6 @@ def preprossing(recievedImage):
     print("image preprocsessing returning the image")
 
     return image_reshaped
-
 
 classes = ['Apple___Apple_scab',
         'Apple___Black_rot',
@@ -100,15 +103,13 @@ def predict():
         print("image loaded....")
         image_arr= preprossing(image)
         print("predicting ...")
-
         result = model.predict(image_arr)
         print("predicted ...")
         ind = np.argmax(result)
         prediction = classes[ind]
-
         print(prediction)
 
-        return render_template('index.html', prediction='prediction', image='static/IMG/', appName="plant disease detection")
+        return render_template('index.html', prediction=prediction, image='static/IMG/usedimg.jpeg', appName="plant disease detection")
     else:
         return render_template('index.html',appName="plant disease detection")
 

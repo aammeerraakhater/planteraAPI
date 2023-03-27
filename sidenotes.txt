@@ -1,1 +1,10 @@
 Image.save() Saves this image under the given filename. If no format is specified, the format to use is determined from the filename extension, if possible.
+helpful resourses:
+    https://www.youtube.com/watch?v=P8zsrVAUd-o&list=PLzGS2DxjmXXVI88JI9-hn98n9qkrqLjXM
+    https://stackoverflow.com/questions/69389402/missing-cv2-in-docker-container
+    https://hasty.ai/content-hub/articles/exploration-of-different-deep-learning-model-formats
+    https://towardsdatascience.com/machine-learning-in-production-keras-flask-docker-and-heroku-933b5f885459
+    https://towardsdatascience.com/guide-to-file-formats-for-machine-learning-columnar-training-inferencing-and-the-feature-store-2e0c3d18d4f9
+    
+cv2 needed the docker file to be downloaded as the lib1 was deleted due to it's big size, so it needed to be installed
+nn.h5 is the plant disease detection model 
