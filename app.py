@@ -89,6 +89,9 @@ def api():
         ind = np.argmax(result)
         prediction = classes[ind]
         print(prediction)
+        remove_img(remove_img, 'static/IMG', 'usedimg.jpeg')
+        print("Image is being deleted")
+
         return jsonify({'prediction': prediction})
     except:
         return jsonify({'Error': 'Error occur'})
