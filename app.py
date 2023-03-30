@@ -6,11 +6,11 @@ from PIL import Image
 import numpy as np
 import cv2
 import os
+
 app = Flask(__name__)
 def remove_img(self, path, img_name):
         if os.path.exists(path + '/' + img_name):
-            os.remove(path + '/' + img_name)
-        return True
+            os.remove(path + '/' + img_name) 
 
 def preprossing(recievedImage):
     remove_img(remove_img, 'static/IMG', 'usedimg.jpeg')
@@ -67,6 +67,7 @@ classes = ['Apple___Apple_scab',
         'Tomato___Tomato_Yellow_Leaf_Curl_Virus',
         'Tomato___Tomato_mosaic_virus',
         'Tomato___healthy']
+
 model=load_model("nn.h5")
 
 @app.route('/')
