@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crop yield detection</title>
+    <form class="card-form" action="/predictCropYield" method="post">
+        <div class="input">
+            <input type="number" step="any" name="Max_Temperature" class="input-field" required>
+            <label  class="input-label"> Max_Temperature </label>
+        </div>
+        <div class="input">
+            <input type="number" step="any" step="any" name="Min_Temperature" class="input-field" required>
+            <label  class="input-label"> Min_Temperature </label>
+        </div>
+        <div class="input">
+            <input type="number" step="any" name="Rainfall" class="input-field" required>
+            <label  class="input-label"> Rainfall </label>
+        </div>
+        <div class="input">
+            <input type="number" step="any" name="Humidity" class="input-field" required>
+            <label  class="input-label"> Humidity </label>
+        </div>
+        <div class="input">
+            <input type="number" step="any" name="SoilType" class="input-field" required>
+            <label  class="input-label"> SoilType </label>
+        </div>
+        <div class="action">
+            <button type="submit" class="action-button">Submit</button>
+        </div>
+    </form>
+    <div>
+       prediction : {{prediction}}
+    </div>
+</head>
+<body>
+    
+</body>
+</html>

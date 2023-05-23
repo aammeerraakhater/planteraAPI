@@ -6,25 +6,27 @@ from PIL import Image
 import numpy as np
 import cv2
 import os
+from joblib import Parallel, delayed
+import joblib
+  
+
 
 app = Flask(__name__)
 def remove_img(self, path, img_name):
         if os.path.exists(path + '/' + img_name):
             os.remove(path + '/' + img_name) 
+            # having a return value destroyed the API
 
 def preprossing(recievedImage):
     remove_img(remove_img, 'static/IMG', 'usedimg.jpeg')
     print('opening image')
     rImage = Image.open(recievedImage)
     imagePath = 'static/IMG/usedimg.jpeg'
-    # rImage.save(imageFakePath)
-    # imagetype = imghdr.what(imageFakePath)
-    # imagePath = 'static/IMG/usedimg.'+imagetype # this is definitely useless
     rImage.save(imagePath) # this converts to the format i give
     image = cv2.imread(imagePath)
-    image_resized = cv2.resize(image,(224, 224))
-    image_scaled = image_resized/255
-    image_reshaped = np.reshape(image_scaled,[1,224,224,3])
+    input_image_resize = cv2.resize(image, (256,256))
+    input_image_scaled = input_image_resize/255
+    image_reshaped = np.reshape(input_image_scaled, [1,256,256,3])
     print("image preprocsessing returning the image")
 
     return image_reshaped
@@ -68,7 +70,8 @@ classes = ['Apple___Apple_scab',
         'Tomato___Tomato_mosaic_virus',
         'Tomato___healthy']
 
-model=load_model("nn.h5")
+model=load_model("model.h5")
+cropyield = joblib.load('cropYield.pkl')
 
 @app.route('/')
 def index():
@@ -83,12 +86,15 @@ def api():
             return "Please try again. The Image doesn't exist"
         image = request.files.get('fileup')
         image_arr = preprossing(image)
+        input_prediction = model.predict(image_arr)
         print("Model predicting ...")
-        result = model.predict(image_arr)
-        print("Model predicted")
-        ind = np.argmax(result)
-        prediction = classes[ind]
-        print(prediction)
+        print(input_prediction[0])
+        print(max(input_prediction[0]))
+        input_pred_label = np.argmax(input_prediction)
+        if max(input_prediction[0]) < 0.6 :
+            prediction = 'please add plants picture '
+        else:
+            prediction = classes[input_pred_label]
         remove_img(remove_img, 'static/IMG', 'usedimg.jpeg')
         print("Image is being deleted")
 
@@ -104,18 +110,62 @@ def predict():
         # Get the image from post request
         print("image loading....")
         image = request.files['fileup']
-        print("image loaded....")
-        image_arr= preprossing(image)
-        print("predicting ...")
-        result = model.predict(image_arr)
-        print("predicted ...")
-        ind = np.argmax(result)
-        prediction = classes[ind]
+        image_arr = preprossing(image)
+        input_prediction = model.predict(image_arr)
+        print("Model predicting ...")
+        print(input_prediction[0])
+        print(max(input_prediction[0]))
+        input_pred_label = np.argmax(input_prediction)
+        if max(input_prediction[0]) < 0.6 :
+            prediction = 'please add plants picture '
+        else:
+            prediction = classes[input_pred_label]
         print(prediction)
 
         return render_template('index.html', prediction=prediction, image='static/IMG/usedimg.jpeg', appName="plant disease detection")
     else:
         return render_template('index.html',appName="plant disease detection")
+
+########################################################
+
+@app.route('/cropyield')
+def cropYieldPage():
+    return render_template('predictcropyield.html')
+
+@app.route('/predictCropYieldApi', methods=["POST"])
+def cropYieldApi():
+    try:
+        if ('Max_Temperature' or 'Min_Temperature' or 'Rainfall' or 'Humidity' or 'SoilType') not in request.form:
+            return "Please try again. Enter valid fields"
+
+        Max_Temperature = request.form['Max_Temperature']
+        Min_Temperature = request.form['Min_Temperature']
+        Rainfall = request.form['Rainfall']
+        Humidity = request.form['Humidity']
+        SoilType = request.form['SoilType']
+        data = np.array([[Max_Temperature,Min_Temperature,Rainfall,Humidity,SoilType]])
+        prediction = cropyield.predict(data)
+        return jsonify({'prediction': prediction[0]})
+    except:
+        return jsonify({'Error': 'Error occur'})
+
+
+
+@app.route('/predictCropYield', methods=["POST"])
+def cropYield():
+    if request.method == "POST":
+        Max_Temperature = request.form['Max_Temperature']
+        Min_Temperature = request.form['Min_Temperature']
+        Rainfall = request.form['Rainfall']
+        Humidity = request.form['Humidity']
+        SoilType = request.form['SoilType']
+        data = np.array([[Max_Temperature,Min_Temperature,Rainfall,Humidity,SoilType]])
+        prediction = cropyield.predict(data)
+        print(prediction)
+        return render_template('predictcropyield.html', prediction=prediction)
+    else:
+        print('not printed')
+        return  render_template('predictcropyield.html')
 
 
 if __name__ == '__main__':
