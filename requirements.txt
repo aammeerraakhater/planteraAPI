@@ -3,7 +3,7 @@ flask
 keras
 tensorflow==2.11.0
 pillow
-numpy==1.22.4
+numpy== 1.21.6
 opencv-python-headless
 protobuf
 joblib==1.2.0
