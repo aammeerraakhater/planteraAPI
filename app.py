@@ -1,14 +1,10 @@
 from flask import Flask, request, render_template, url_for, jsonify
-from keras.applications.mobilenet import MobileNet
-import tensorflow as tf
 from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import cv2
 import os
-from joblib import Parallel, delayed
 import joblib
-  
 
 
 app = Flask(__name__)
@@ -71,7 +67,8 @@ classes = ['Apple___Apple_scab',
         'Tomato___healthy']
 
 model=load_model("model.h5")
-cropyield = joblib.load('cropYield.pkl')
+cropyield = joblib.load('cropYield1.pkl')
+
 
 @app.route('/')
 def index():
