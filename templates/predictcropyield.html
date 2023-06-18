@@ -7,24 +7,24 @@
     <title>crop yield detection</title>
     <form class="card-form" action="/predictCropYield" method="post">
         <div class="input">
-            <input type="number" step="any" name="Max_Temperature" class="input-field" required>
-            <label  class="input-label"> Max_Temperature </label>
+            <input  type="text" name="AverageTemp" class="input-field" required>
+            <label  class="input-label"> AverageTemp </label>
         </div>
         <div class="input">
-            <input type="number" step="any" step="any" name="Min_Temperature" class="input-field" required>
-            <label  class="input-label"> Min_Temperature </label>
+            <input  type="text" name="AverageRainfall" class="input-field" required>
+            <label  class="input-label"> AverageRainfall </label>
         </div>
         <div class="input">
-            <input type="number" step="any" name="Rainfall" class="input-field" required>
-            <label  class="input-label"> Rainfall </label>
+            <input  type="text" name="CropName" class="input-field" required>
+            <label  class="input-label"> CropName </label>
         </div>
         <div class="input">
-            <input type="number" step="any" name="Humidity" class="input-field" required>
-            <label  class="input-label"> Humidity </label>
+            <input type="text" name="CountryName" class="input-field" required>
+            <label  class="input-label"> CountryName </label>
         </div>
         <div class="input">
-            <input type="number" step="any" name="SoilType" class="input-field" required>
-            <label  class="input-label"> SoilType </label>
+            <input  type="text"  name="PesticideTonnes" class="input-field" required>
+            <label  class="input-label"> PesticideTonnes </label>
         </div>
         <div class="action">
             <button type="submit" class="action-button">Submit</button>

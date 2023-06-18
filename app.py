@@ -67,7 +67,7 @@ classes = ['Apple___Apple_scab',
         'Tomato___healthy']
 
 model=load_model("model.h5")
-cropyield = joblib.load('cropYield1.pkl')
+cropyield = joblib.load('finalmodel.pkl')
 
 
 @app.route('/')
@@ -132,17 +132,18 @@ def cropYieldPage():
 @app.route('/predictCropYieldApi', methods=["POST"])
 def cropYieldApi():
     try:
-        if ('Max_Temperature' or 'Min_Temperature' or 'Rainfall' or 'Humidity' or 'SoilType') not in request.form:
-            return "Please try again. Enter valid fields"
+        if ('AverageTemp' or 'AverageRainfall' or 'CropName' or 'CountryName' or 'PesticideTonnes') not in request.form:
+            return jsonify("Please try again. Enter valid fields")
 
-        Max_Temperature = request.form['Max_Temperature']
-        Min_Temperature = request.form['Min_Temperature']
-        Rainfall = request.form['Rainfall']
-        Humidity = request.form['Humidity']
-        SoilType = request.form['SoilType']
-        data = np.array([[Max_Temperature,Min_Temperature,Rainfall,Humidity,SoilType]])
+        AverageTemp = request.form['AverageTemp']
+        AverageRainfall = request.form['AverageRainfall']
+        CropName = request.form['CropName']
+        CountryName = request.form['CountryName']
+        PesticideTonnes = request.form['PesticideTonnes']
+        data = np.array([[CountryName, CropName, AverageRainfall, PesticideTonnes, AverageTemp]])
         prediction = cropyield.predict(data)
-        return jsonify({'prediction': prediction[0]})
+        prediction = cropyield.predict(data)
+        return jsonify({'prediction': float(prediction[0])})
     except:
         return jsonify({'Error': 'Error occur'})
 
@@ -151,12 +152,12 @@ def cropYieldApi():
 @app.route('/predictCropYield', methods=["POST"])
 def cropYield():
     if request.method == "POST":
-        Max_Temperature = request.form['Max_Temperature']
-        Min_Temperature = request.form['Min_Temperature']
-        Rainfall = request.form['Rainfall']
-        Humidity = request.form['Humidity']
-        SoilType = request.form['SoilType']
-        data = np.array([[Max_Temperature,Min_Temperature,Rainfall,Humidity,SoilType]])
+        AverageTemp = request.form['AverageTemp']
+        AverageRainfall = request.form['AverageRainfall']
+        CropName = request.form['CropName']
+        CountryName = request.form['CountryName']
+        PesticideTonnes = request.form['PesticideTonnes']
+        data = np.array([[CountryName, CropName, AverageRainfall, PesticideTonnes, AverageTemp]])
         prediction = cropyield.predict(data)
         print(prediction)
         return render_template('predictcropyield.html', prediction=prediction)
